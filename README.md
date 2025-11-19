@@ -8,6 +8,16 @@ A minimal, performant blog template featuring a retro terminal interface with ne
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.16-38B2AC?logo=tailwind-css)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)
 
+## 📸 Screenshots
+
+### Homepage
+![Homepage Screenshot](public/homepage-screenshot.png)
+*Terminal-themed homepage with featured posts and cyberpunk aesthetics*
+
+### Blog Post
+![Blog Post Screenshot](public/blog-post-screenshot.png)
+*Example blog post page with terminal styling and code examples*
+
 ## 🚀 Quick Start
 
 ### Prerequisites
