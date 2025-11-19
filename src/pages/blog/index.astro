@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+---
+
+<BaseLayout title="Blog - B-SIDE">
+  <div class="max-w-3xl mx-auto px-4 py-20">
+    <!-- Header -->
+    <div class="border-b border-[var(--color-cyan)] pb-4 mb-12">
+      <div class="text-[var(--color-cyan)] text-xs font-mono mb-2">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <h1 class="text-[var(--color-cyan)] text-3xl font-mono font-bold mb-2">
+        $ ALL_POSTS
+      </h1>
+      <div class="text-[var(--color-text-secondary)] text-sm font-mono">
+        &gt; {sortedPosts.length} posts | newest first
+      </div>
+    </div>
+
+    <!-- Posts List - Single Column, Titles Only -->
+    <div class="space-y-4">
+      {sortedPosts.map((post, index) => (
+        <div class="border-b border-[var(--color-text-muted)] pb-4">
+          <a href={`/blog/${post.slug}`} class="block group">
+            <div class="flex items-start gap-4">
+              <span class="text-[var(--color-text-secondary)] text-sm font-mono flex-shrink-0">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div class="flex-1">
+                <h2 class="text-[var(--color-cyan)] text-lg font-mono font-bold group-hover:text-glow-cyan transition-all">
+                  {post.data.title}
+                </h2>
+                <div class="flex items-center gap-3 text-xs font-mono text-[var(--color-text-secondary)] mt-2">
+                  <span>{formatDate(post.data.pubDate)}</span>
+                  {post.data.featured && (
+                    <>
+                      <span>●</span>
+                      <span class="text-[var(--color-green)]">FEATURED</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Back to home -->
+    <div class="mt-12 text-center">
+      <a href="/" class="btn-terminal btn-primary inline-block">
+        $ Back to Home
+      </a>
+    </div>
+  </div>
+</BaseLayout>

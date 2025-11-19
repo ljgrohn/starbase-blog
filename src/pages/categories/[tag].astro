@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
+  return allTags.map(tag => ({
+    params: { tag },
+    props: {
+      posts: allPosts
+        .filter(post => post.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    }
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+---
+
+<BaseLayout title={`#${tag} - B-SIDE`}>
+  <div class="max-w-4xl mx-auto px-4 py-20">
+    <!-- Header -->
+    <div class="border-b border-[var(--color-cyan)] pb-4 mb-12">
+      <div class="text-[var(--color-cyan)] text-xs font-mono mb-2">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <h1 class="text-[var(--color-cyan)] text-3xl font-mono font-bold mb-2">
+        $ CATEGORY: #{tag}
+      </h1>
+      <div class="text-[var(--color-text-secondary)] text-sm font-mono">
+        &gt; {posts.length} {posts.length === 1 ? 'post' : 'posts'} found
+      </div>
+    </div>
+
+    <!-- Posts List -->
+    <div class="space-y-8">
+      {posts.map((post) => (
+        <article class="card-terminal p-6 group">
+          <a href={`/blog/${post.slug}`} class="block">
+            <h2 class="text-[var(--color-cyan)] text-xl font-mono font-bold mb-3 group-hover:text-glow-cyan transition-all">
+              ▸ {post.data.title}
+            </h2>
+            <p class="text-[var(--color-text-primary)] text-sm font-mono leading-relaxed mb-4">
+              {post.data.description}
+            </p>
+            <div class="flex items-center gap-4 text-xs font-mono text-[var(--color-text-secondary)]">
+              <span>&gt; {formatDate(post.data.pubDate)}</span>
+              <span>●</span>
+              <span>{post.data.author}</span>
+              {post.data.featured && (
+                <>
+                  <span>●</span>
+                  <span class="text-[var(--color-green)]">FEATURED</span>
+                </>
+              )}
+            </div>
+            {post.data.tags.length > 0 && (
+              <div class="mt-4 flex flex-wrap gap-2">
+                {post.data.tags.map((t) => (
+                  <span class={`text-xs font-mono border px-2 py-1 ${t === tag ? 'text-[var(--color-cyan)] border-[var(--color-cyan)]' : 'text-[var(--color-text-muted)] border-[var(--color-text-muted)]'}`}>
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <!-- Navigation -->
+    <div class="mt-12 flex gap-4 justify-center">
+      <a href="/categories" class="btn-terminal btn-primary">
+        $ All Categories
+      </a>
+      <a href="/" class="btn-terminal btn-secondary">
+        $ Home
+      </a>
+    </div>
+  </div>
+</BaseLayout>

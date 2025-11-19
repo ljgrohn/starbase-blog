@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const featuredPosts = allPosts
+  .filter(post => post.data.featured)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+---
+
+<div class="max-w-6xl mx-auto px-4 py-20">
+  <!-- Section Header -->
+  <div class="mb-12">
+    <div class="text-[var(--color-cyan)] text-sm mb-2 font-mono">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+    <h2 class="text-[var(--color-cyan)] text-2xl font-mono font-bold">$ FEATURED POSTS</h2>
+  </div>
+
+  <!-- Posts Grid -->
+  <div class="grid md:grid-cols-3 gap-6">
+    {featuredPosts.map((post) => (
+      <a href={`/blog/${post.slug}`} class="card-terminal p-6 block group">
+        <div class="text-[var(--color-cyan)] text-lg font-mono mb-4 group-hover:text-glow-cyan transition-all">
+          ▸ {post.data.title}
+        </div>
+        <p class="text-[var(--color-text-primary)] text-sm font-mono leading-relaxed mb-4">
+          {post.data.description}
+        </p>
+        <div class="flex items-center gap-4 text-xs font-mono text-[var(--color-text-secondary)]">
+          <span>&gt; {formatDate(post.data.pubDate)}</span>
+          <span>●</span>
+          <span>{post.data.author}</span>
+        </div>
+        {post.data.tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <span class="text-xs font-mono text-[var(--color-text-muted)] border border-[var(--color-text-muted)] px-2 py-1">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+</div>

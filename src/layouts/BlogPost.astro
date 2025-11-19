@@ -1,0 +1,178 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  author: string;
+  tags: string[];
+}
+
+const { title, description, pubDate, author, tags } = Astro.props;
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+---
+
+<BaseLayout title={`${title} - Starbase Blog`} description={description}>
+  <article class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Post Header -->
+    <div class="border-b border-[var(--color-cyan)] pb-6 mb-8">
+      <div class="text-[var(--color-cyan)] text-xs font-mono mb-2">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <h1 class="text-[var(--color-cyan)] text-3xl sm:text-4xl font-mono font-bold mb-4">
+        $ {title}
+      </h1>
+      <div class="flex flex-wrap items-center gap-4 text-sm font-mono text-[var(--color-text-secondary)]">
+        <span>&gt; {formatDate(pubDate)}</span>
+        <span>●</span>
+        <span>Author: {author}</span>
+      </div>
+      {tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span class="text-xs font-mono text-[var(--color-text-muted)] border border-[var(--color-text-muted)] px-2 py-1">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Post Content -->
+    <div class="prose prose-invert prose-terminal max-w-none">
+      <slot />
+    </div>
+
+    <!-- Post Footer -->
+    <div class="mt-12 pt-8 border-t border-[var(--color-text-muted)]">
+      <div class="text-[var(--color-text-secondary)] text-sm font-mono mb-4">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <div class="flex gap-4">
+        <a href="/blog" class="btn-terminal btn-primary">
+          $ All Posts
+        </a>
+        <a href="/" class="btn-terminal btn-secondary">
+          $ Home
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Terminal-themed prose styles */
+  .prose-terminal {
+    color: var(--color-text-primary);
+    font-family: var(--font-family-mono);
+  }
+
+  .prose-terminal h1,
+  .prose-terminal h2,
+  .prose-terminal h3,
+  .prose-terminal h4,
+  .prose-terminal h5,
+  .prose-terminal h6 {
+    color: var(--color-cyan);
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-family-mono);
+  }
+
+  .prose-terminal h1 { font-size: 2rem; }
+  .prose-terminal h2 { font-size: 1.5rem; }
+  .prose-terminal h3 { font-size: 1.25rem; }
+
+  .prose-terminal p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    font-size: 0.9375rem;
+  }
+
+  .prose-terminal a {
+    color: var(--color-cyan);
+    text-decoration: none;
+    transition: all 300ms;
+  }
+
+  .prose-terminal a:hover {
+    text-shadow: 0 0 10px rgba(0, 171, 171, 0.5);
+  }
+
+  .prose-terminal code {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-cyan);
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--color-text-muted);
+    font-size: 0.875rem;
+    font-family: var(--font-family-mono);
+  }
+
+  .prose-terminal pre {
+    background-color: var(--color-bg-tertiary);
+    border: 1px solid var(--color-text-muted);
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  .prose-terminal pre code {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .prose-terminal blockquote {
+    border-left: 2px solid var(--color-cyan);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  .prose-terminal ul,
+  .prose-terminal ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+
+  .prose-terminal li {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-terminal strong {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  .prose-terminal hr {
+    border: none;
+    border-top: 1px solid var(--color-text-muted);
+    margin: 2rem 0;
+  }
+
+  .prose-terminal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .prose-terminal th,
+  .prose-terminal td {
+    border: 1px solid var(--color-text-muted);
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  .prose-terminal th {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-cyan);
+    font-weight: 600;
+  }
+</style>

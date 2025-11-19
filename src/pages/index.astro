@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedPosts from '../components/FeaturedPosts.astro';
+import { LOGO_TEMPLATES } from '../utils/ascii-art';
+---
+
+<BaseLayout title="B-SIDE - Home">
+  <!-- Hero Section -->
+  <div class="min-h-screen flex flex-col items-center px-4 pt-20">
+
+    <!-- ASCII Logo with Border -->
+    <div class="mb-8" style="border: 3px double var(--color-cyan); padding: 2rem 4rem;">
+      <pre class="text-[var(--color-cyan)] ascii-art" style="text-align: left; margin: 0; font-size: 14px; line-height: 1.2;">{LOGO_TEMPLATES.BSIDE}</pre>
+    </div>
+
+    <!-- Tagline -->
+    <p class="text-[var(--color-text-primary)] text-center text-lg sm:text-xl mb-2 font-mono">
+      &gt; A cyberpunk terminal interface for the modern web
+    </p>
+
+    <p class="text-[var(--color-text-secondary)] text-center text-sm mb-12 font-mono max-w-2xl">
+      Built with Astro, styled with terminal aesthetics, and powered by pure CSS.
+      Welcome to the digital frontier.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-wrap gap-4 justify-center mb-12">
+      <a href="/blog" class="btn-terminal btn-primary">
+        $ Read Posts
+      </a>
+
+      <a href="/categories" class="btn-terminal btn-secondary">
+        $ Categories
+      </a>
+    </div>
+
+    <!-- Featured Posts Section -->
+    <div class="w-full">
+      <FeaturedPosts />
+    </div>
+
+    <!-- Status Indicator at bottom -->
+    <div class="mt-auto mb-8 text-[var(--color-green)] text-sm font-mono">
+      ● SYSTEM ONLINE
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-[var(--color-text-muted)] bg-[var(--color-bg-secondary)] py-8 mt-20">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <div class="text-[var(--color-text-secondary)] text-sm font-mono mb-4">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <p class="text-[var(--color-text-muted)] text-xs font-mono">
+        © 2025 STARBASE. Built with Terminal Cyberpunk Theme.
+      </p>
+      <p class="text-[var(--color-text-muted)] text-xs font-mono mt-2">
+        &gt; <a href="/blog" class="text-[var(--color-cyan)] hover:text-glow-cyan">Blog</a> |
+        <a href="https://github.com" class="text-[var(--color-cyan)] hover:text-glow-cyan">GitHub</a> |
+        <a href="/about" class="text-[var(--color-cyan)] hover:text-glow-cyan">About</a>
+      </p>
+    </div>
+  </footer>
+</BaseLayout>

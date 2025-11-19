@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+
+// Get all unique tags
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))].sort();
+
+// Count posts per tag
+const tagCounts = allTags.map(tag => ({
+  tag,
+  count: allPosts.filter(post => post.data.tags.includes(tag)).length
+}));
+---
+
+<BaseLayout title="Categories - B-SIDE">
+  <div class="max-w-4xl mx-auto px-4 py-20">
+    <!-- Header -->
+    <div class="border-b border-[var(--color-cyan)] pb-4 mb-12">
+      <div class="text-[var(--color-cyan)] text-xs font-mono mb-2">
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      </div>
+      <h1 class="text-[var(--color-cyan)] text-3xl font-mono font-bold mb-2">
+        $ CATEGORIES
+      </h1>
+      <div class="text-[var(--color-text-secondary)] text-sm font-mono">
+        &gt; {allTags.length} categories found
+      </div>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {tagCounts.map(({ tag, count }) => (
+        <a href={`/categories/${tag}`} class="card-terminal p-6 block group">
+          <div class="text-[var(--color-cyan)] text-lg font-mono mb-2 group-hover:text-glow-cyan transition-all">
+            ▸ #{tag}
+          </div>
+          <div class="text-[var(--color-text-secondary)] text-sm font-mono">
+            {count} {count === 1 ? 'post' : 'posts'}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Back to home -->
+    <div class="mt-12 text-center">
+      <a href="/" class="btn-terminal btn-primary inline-block">
+        $ Back to Home
+      </a>
+    </div>
+  </div>
+</BaseLayout>

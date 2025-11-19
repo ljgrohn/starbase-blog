@@ -1,0 +1,209 @@
+/* Import JetBrains Mono font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* Tailwind Theme Configuration */
+@theme {
+  /* Terminal color palette */
+  --color-bg-primary: #050505;
+  --color-bg-secondary: #0a0a0a;
+  --color-bg-tertiary: #0f0f0f;
+
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #808080;
+  --color-text-muted: #404040;
+
+  --color-cyan: #00abab;
+  --color-magenta: #c300c3;
+  --color-green: #00b300;
+  --color-red: #ad0000;
+
+  /* Font family */
+  --font-family-mono: "JetBrains Mono", "Fira Code", "IBM Plex Mono", monospace;
+
+  /* Box shadows for glow effects */
+  --shadow-glow-cyan: 0 0 10px rgb(0 171 171 / 0.5);
+  --shadow-glow-cyan-strong: 0 0 20px rgb(0 171 171 / 0.8);
+  --shadow-glow-magenta: 0 0 10px rgb(195 0 195 / 0.5);
+
+  /* Animations */
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  --ease-pulse-glow: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Global terminal styles */
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Scanline effect overlay (optional - remove if too distracting) */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 171, 171, 0.03) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(0, 171, 171, 0.03) 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00abab;
+  border: 1px solid #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00d5d5;
+}
+
+/* Terminal text effects */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 171, 171, 0.5);
+}
+
+.text-glow-magenta {
+  text-shadow: 0 0 10px rgba(195, 0, 195, 0.5);
+}
+
+/* ASCII art styling */
+.ascii-art {
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.2;
+  white-space: pre;
+  color: #00abab;
+}
+
+/* Terminal prompt styles */
+.terminal-prompt::before {
+  content: '> ';
+  color: #00abab;
+  margin-right: 0.5rem;
+}
+
+.terminal-dollar::before {
+  content: '$ ';
+  color: #00abab;
+  margin-right: 0.5rem;
+}
+
+/* Terminal button base styles */
+.btn-terminal {
+  font-family: var(--font-family-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 300ms;
+  border-width: 1px;
+  position: relative;
+  overflow: hidden;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-terminal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-terminal::before {
+  content: '>> ';
+  margin-right: 0.5rem;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.btn-terminal:hover::before {
+  opacity: 1;
+}
+
+/* Primary (cyan) button */
+.btn-primary {
+  border-color: var(--color-cyan);
+  color: var(--color-cyan);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-cyan);
+  color: var(--color-bg-primary);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+/* Secondary (magenta) button */
+.btn-secondary {
+  border-color: var(--color-magenta);
+  color: var(--color-magenta);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-magenta);
+  color: var(--color-bg-primary);
+  box-shadow: var(--shadow-glow-magenta);
+}
+
+/* Success (green) button */
+.btn-success {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+
+.btn-success:hover {
+  background-color: var(--color-green);
+  color: var(--color-bg-primary);
+}
+
+/* Terminal input field */
+.input-terminal {
+  width: 100%;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-text-muted);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  transition: all 300ms;
+}
+
+.input-terminal:focus {
+  outline: none;
+  border-color: var(--color-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+/* Terminal card/container */
+.card-terminal {
+  border: 1px solid var(--color-text-muted);
+  background-color: var(--color-bg-secondary);
+  transition: all 300ms;
+}
+
+.card-terminal:hover {
+  border-color: var(--color-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+}
